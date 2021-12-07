@@ -1,0 +1,38 @@
+.root{
+    -fx-font-family: 'Palatino';
+}
+
+Label {
+    -fx-padding: 10;
+    -fx-font-size: 15;
+}
+
+Button {
+    -fx-padding: 10;
+    -fx-font-size: 15;
+
+    /*-fx-background-radius: 5;*/
+    -fx-background-color: black;
+    -fx-text-fill: white;
+
+    -fx-border-color: gold;
+    -fx-border-width: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    /*-fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 10, 1, 1, 2)*/
+}
+
+.progress-bar{
+    -fx-padding: 10;
+    -fx-accent: #d20000;
+}
+
+.progress-bar > .track {
+    -fx-text-box-border: black;
+    -fx-control-inner-background: white;
+}
+
+BorderPane {
+    /*-fx-border-width: 10;*/
+    /*-fx-border-color: gold;*/
+    /*-fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);*/
+}
