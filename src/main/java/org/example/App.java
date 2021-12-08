@@ -6,8 +6,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
@@ -17,9 +15,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
-import java.util.HashMap;
-import java.util.Random;
+import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortDataListener;
+import com.fazecast.jSerialComm.SerialPortEvent;
 
 /**
  * JavaFX App
@@ -33,9 +31,15 @@ public class App extends Application {
     Game game;
 
     static String  s1 = "";
+    static boolean rightB = false;
+    static boolean blockB = false;
+    static boolean punchB = false;
+    static boolean leftB = false;
 
     @Override
     public void start(Stage stage) {
+
+
         BorderPane borderPane = new BorderPane();
 
         mediaPlayerWidget = new MediaPlayerWidget();
@@ -113,10 +117,42 @@ public class App extends Application {
         new AnimationTimer() {
             @Override
             public void handle(long now) {
+                if(s1.contains("{") && s1.contains("}")) {
+                    int beg = s1.lastIndexOf("{");
+                    int end = s1.lastIndexOf("}");
+                    String s0 = s1.substring(beg+1, end);
+
+                    String [] s2 =  s0.split(",");
+                    for (String s324: s2) {
+                        System.out.println(s324);
+                    }
+
+                    int punch = Integer.parseInt(s2[0].substring(s2[0].indexOf(":") + 2));
+                    int block = Integer.parseInt(s2[1].substring(s2[1].indexOf(":") + 2));
+                    int left = Integer.parseInt(s2[2].substring(s2[2].indexOf(":") + 2));
+                    int right = Integer.parseInt(s2[3].substring(s2[3].indexOf(":") + 2));
+
+                    punchB = punch != 0;
+                    blockB = block != 0;
+                    leftB = left != 0;
+                    rightB = right != 0;
+
+                    if(punchB || leftB){
+                        game.punch();
+                    }
+
+                    if(blockB || rightB){
+                        game.block();
+                    }
+                }
+
                 game.update();
                 score.setValue(game.getScore());
                 health.setValue(game.getHealth());
                 enemyHealth.setValue(game.getEnemyHealth());
+
+
+
 
                 if(game.win){
                     stop();
@@ -130,6 +166,27 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        SerialPort comPort = SerialPort.getCommPorts()[8];
+        comPort.setBaudRate(115200);
+        comPort.openPort();
+
+        comPort.addDataListener(new SerialPortDataListener() {
+            @Override
+            public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
+            @Override
+            public void serialEvent(SerialPortEvent event)
+            {
+                if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
+                    return;
+                byte[] readBuffer = new byte[comPort.bytesAvailable()];
+                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+
+                String s = new String(readBuffer);
+//                System.out.println(s);
+                s1+=s;
+            }
+        });
+
         launch();
     }
 

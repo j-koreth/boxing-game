@@ -20,7 +20,6 @@ public class Game {
     Random r = new Random();
     int score = 0;
     int chanceOfBlock = 30;
-    static String  s1 = "";
 
 
     public Game(GraphicsContext gc, GraphicsContext overlay) {
@@ -112,7 +111,7 @@ public class Game {
         paused = true;
         overlay.setGlobalAlpha(.8);
         overlay.setFill(Color.BLACK);
-        overlay.fillRect(0,0,650, 500);
+        overlay.fillRect(0,0,750, 500);
     }
 
     public void win(){
