@@ -127,10 +127,10 @@ public class App extends Application {
                         System.out.println(s324);
                     }
 
-                    int punch = Integer.parseInt(s2[0].substring(s2[0].indexOf(":") + 2));
-                    int block = Integer.parseInt(s2[1].substring(s2[1].indexOf(":") + 2));
-                    int left = Integer.parseInt(s2[2].substring(s2[2].indexOf(":") + 2));
-                    int right = Integer.parseInt(s2[3].substring(s2[3].indexOf(":") + 2));
+                    int punch = Integer.parseInt(s2[0].substring(s2[0].indexOf(":") + 1));
+                    int block = Integer.parseInt(s2[1].substring(s2[1].indexOf(":") + 1));
+                    int left = Integer.parseInt(s2[2].substring(s2[2].indexOf(":") + 1));
+                    int right = Integer.parseInt(s2[3].substring(s2[3].indexOf(":") + 1));
 
                     punchB = punch != 0;
                     blockB = block != 0;
@@ -166,26 +166,43 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        SerialPort comPort = SerialPort.getCommPorts()[8];
-        comPort.setBaudRate(115200);
-        comPort.openPort();
+//        SerialPort comPort = SerialPort.getCommPorts()[8];
+//        comPort.setBaudRate(115200);
+//        comPort.openPort();
+//
+//        comPort.addDataListener(new SerialPortDataListener() {
+//            @Override
+//            public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
+//            @Override
+//            public void serialEvent(SerialPortEvent event)
+//            {
+//                if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
+//                    return;
+//                byte[] readBuffer = new byte[comPort.bytesAvailable()];
+//                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+//
+//                String s = new String(readBuffer);
+////                System.out.println(s);
+//                s1+=s;
+//            }
+//        });
 
-        comPort.addDataListener(new SerialPortDataListener() {
-            @Override
-            public int getListeningEvents() { return SerialPort.LISTENING_EVENT_DATA_AVAILABLE; }
-            @Override
-            public void serialEvent(SerialPortEvent event)
-            {
-                if (event.getEventType() != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
-                    return;
-                byte[] readBuffer = new byte[comPort.bytesAvailable()];
-                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+//        String s1 = "{P:1,B:1,L:1,R:1}";
+//
+//        int beg = s1.lastIndexOf("{");
+//        int end = s1.lastIndexOf("}");
+//        String s0 = s1.substring(beg+1, end);
+//
+//
+////        System.out.println(s0);
+//
+//        String [] s2 =  s0.split(",");
+//        for (String s324: s2) {
+//            System.out.println(s324);
+//        }
+//
+//        System.out.println(s2[0].substring(s2[0].indexOf(":") + 1));
 
-                String s = new String(readBuffer);
-//                System.out.println(s);
-                s1+=s;
-            }
-        });
 
         launch();
     }
